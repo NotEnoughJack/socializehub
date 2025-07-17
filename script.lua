@@ -1,7 +1,12 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/NotEnoughJack/socializehub/refs/heads/main/stats"))()
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local NotificationLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/IceMinisterq/Notification-Library/Main/Library.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+NotificationLibrary:SendNotification("Warning", "Script has loaded, You may lag", 3)
+
+
+wait(5)
 
 local Window = Fluent:CreateWindow({
     Title = "Socialize Hub",
@@ -619,7 +624,7 @@ local AnimationCategories = {
     { Name = "Awk Uppercut Victim", Id = "rbxassetid://71377448806509" },
 	},
 
-	["Saitama"] = {
+	["Suiryu"] = {
     { Name = "Suiryu Vanishing Kick", Id = "rbxassetid://17838006839" },
     { Name = "Suiryu Vanishing Kick Finisher", Id = "rbxassetid://18464372850" },
     { Name = "Suiryu Vanishing Kick Finisher Victim", Id = "rbxassetid://18464373968" },
