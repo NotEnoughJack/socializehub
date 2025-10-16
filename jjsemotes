@@ -1,0 +1,110 @@
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local NotificationLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/IceMinisterq/Notification-Library/Main/Library.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NotEnoughJack/socializehub/refs/heads/main/stats"))()
+
+NotificationLibrary:SendNotification("Warning", "Script has loaded, You may lag", 3)
+
+
+wait(5)
+
+local Window = Fluent:CreateWindow({
+    Title = "JJS Emote Hub",
+    SubTitle = "by Jack",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = true,
+    Theme = "Rose",
+    MinimizeKey = Enum.KeyCode.LeftControl
+})
+
+local Tabs = {
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+}
+
+local Options = Fluent.Options
+local player = game.Players.LocalPlayer
+local humanoid = player.Character:WaitForChild("Humanoid")
+
+local AnimationCategories = {
+    ["JJS Emotes"] = {
+        { Name = "Baldi", Id = "rbxassetid://131766506272227" },
+        { Name = "Finger Wag", Id = "rbxassetid://120133391090244" },
+        { Name = "Dragon", Id = "rbxassetid://83548230184631" },
+        { Name = "Tired", Id = "rbxassetid://138056982063415" },
+        { Name = "Stance", Id = "rbxassetid://100298754986980" },
+        { Name = "Insane", Id = "rbxassetid://92450858029267" },
+        { Name = "Lightsticks", Id = "rbxassetid://110250623043935" },
+        { Name = "Ringtone", Id = "rbxassetid://108283445857217" },
+        { Name = "Sunglasses", Id = "rbxassetid://138196552148011" },
+        { Name = "Cardboard", Id = "rbxassetid://86781886716391" },
+        { Name = "Lethal", Id = "rbxassetid://127800835917326" },
+        { Name = "Broom", Id = "rbxassetid://135625296252870" },
+        { Name = "Jiggy", Id = "rbxassetid://137322849820774" },
+        { Name = "Basketball", Id = "rbxassetid://111384184392027" },
+        { Name = "Devilhunter", Id = "rbxassetid://79997962022008" },
+        { Name = "Potential", Id = "rbxassetid://104566906467173" },
+        { Name = "Cake", Id = "rbxassetid://138099700178750" },
+        { Name = "Jeep", Id = "rbxassetid://137199497329581" },
+        { Name = "UFO", Id = "rbxassetid://96358442143740" },
+        { Name = "ElectroShuffle", Id = "rbxassetid://136338219967573" },
+        { Name = "When", Id = "rbxassetid://110201576428718" },
+        { Name = "Watashi", Id = "rbxassetid://108752805344392" },
+        { Name = "RatDance", Id = "rbxassetid://120364191871313" },
+        { Name = "Aba", Id = "rbxassetid://94716734599004" },
+        { Name = "Kawaii", Id = "rbxassetid://112175733211747" },
+    }
+}
+
+
+local LoadedAnims = {}
+
+for category, animList in pairs(AnimationCategories) do
+    local tab = Window:AddTab({ Title = category, Icon = "play-circle" })
+    Tabs[category] = tab
+
+    for _, anim in ipairs(animList) do
+        local toggle = tab:AddToggle(anim.Name, {
+            Title = anim.Name,
+            Default = false,
+            Description = "Toggle to play/stop emote"
+        })
+
+        toggle:OnChanged(function(value)
+            if value then
+                local animation = Instance.new("Animation")
+                animation.AnimationId = anim.Id
+                local track = humanoid:LoadAnimation(animation)
+                track:Play()
+                LoadedAnims[anim.Name] = track
+            else
+                local track = LoadedAnims[anim.Name]
+                if track then
+                    track:Stop()
+                    LoadedAnims[anim.Name] = nil
+                end
+            end
+        end)
+    end
+end
+
+Fluent:Notify({
+    Title = "Socialize Hub",
+    Content = "Animation UI loaded.",
+    Duration = 8
+})
+
+SaveManager:SetLibrary(Fluent)
+InterfaceManager:SetLibrary(Fluent)
+
+SaveManager:IgnoreThemeSettings()
+SaveManager:SetIgnoreIndexes({})
+InterfaceManager:SetFolder("FluentScriptHub")
+SaveManager:SetFolder("FluentScriptHub/specific-game")
+
+InterfaceManager:BuildInterfaceSection(Tabs.Settings)
+SaveManager:BuildConfigSection(Tabs.Settings)
+
+Window:SelectTab(1)
+SaveManager:LoadAutoloadConfig()
